@@ -247,7 +247,6 @@ const App = () => {
           </Toolbar>
         </Container>
       </AppBar>
-
       <Box sx={{ height: 600, marginTop: 5, marginLeft: 12, marginRight: 12 }}>
         <DataGrid
           rows={data}
