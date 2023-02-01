@@ -109,7 +109,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const sdmDatas = await client
-        .get('http://192.168.254.190:3333/fetch-details')
+        .get('http://localhost:3333/fetch-details')
         .then(({ data = [] }) =>
           data.map((d: any) => ({ ...d, ...JSON.parse(d.data) }))
         )
