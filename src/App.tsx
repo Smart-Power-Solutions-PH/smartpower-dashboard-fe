@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import client, { setupInterceptors } from './utils/client';
+import client from './utils/client';
 import moment from 'moment';
 import { formatDecimal } from './utils/common';
 import AppBar from '@mui/material/AppBar';
@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import { defaultPowerDatas } from './constants/defaultPowerDatas';
 const columns: GridColDef[] = [
   // { field: 'id', headerName: 'ID', width: 90 },
   {
@@ -106,17 +107,21 @@ const App = () => {
   };
 
   useEffect(() => {
-    // setupInterceptors();
     (async () => {
       const sdmDatas = await client
         .get('http://192.168.254.190:3333/fetch-details')
         .then(({ data = [] }) =>
           data.map((d: any) => ({ ...d, ...JSON.parse(d.data) }))
         )
-        .catch((e) => console.log(e, 'error'));
+        .catch((e) => console.log('Error accessing datas from server: ', e));
 
-      console.log(sdmDatas, 'test');
-      setData(sdmDatas || []);
+      if (sdmDatas) {
+        console.log('Loading datas from server...');
+      } else {
+        console.log('Loading default data for presentation...');
+      }
+
+      setData(sdmDatas || defaultPowerDatas || []);
     })();
   }, []);
 
